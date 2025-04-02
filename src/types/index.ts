@@ -1,6 +1,6 @@
 import { SvgIconComponent } from '@mui/icons-material';
 
-// User related types
+// User Types
 export enum UserRole {
     ADMIN = 'ADMIN',
     USER = 'USER'
@@ -12,11 +12,10 @@ export interface User {
     fullName: string;
     email: string;
     role: UserRole;
-    createdAt: string;
-    updatedAt: string;
+    avatar?: string;
 }
 
-// UI related types
+// UI Types
 export interface MenuItem {
     id: string;
     title: string;
@@ -25,26 +24,33 @@ export interface MenuItem {
     children?: MenuItem[];
 }
 
-export interface UIState {
-    sidebarOpen: boolean;
+// Theme Types
+export interface ThemeMode {
     darkMode: boolean;
+}
+
+// Layout Types
+export interface LayoutState {
+    sidebarOpen: boolean;
     isMobile: boolean;
 }
 
-// Account related types
-export enum AccountType {
-    BANK = 'BANK',
-    CASH = 'CASH',
-    OTHER = 'OTHER'
+// Store Types
+export interface RootState {
+    ui: {
+        sidebarOpen: boolean;
+        darkMode: boolean;
+        isMobile: boolean;
+    };
 }
 
-export interface Account {
-    id: number;
-    name: string;
-    type: AccountType;
-    balance: number;
-    accountNumber?: string;
-    description?: string;
-    createdAt: string;
-    updatedAt: string;
+// Sidebar Types
+export interface SidebarProps {
+    open: boolean;
+    onClose?: () => void;
+}
+
+// Header Types
+export interface HeaderProps {
+    onSidebarOpen?: () => void;
 }

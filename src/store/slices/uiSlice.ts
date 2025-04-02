@@ -1,9 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { UIState } from '../../types';
+import { LayoutState } from '../../types';
 
-const initialState: UIState = {
+const initialState: LayoutState = {
     sidebarOpen: window.innerWidth >= 1200,
-    darkMode: false,
     isMobile: window.innerWidth < 1200
 };
 
@@ -17,11 +16,9 @@ const uiSlice = createSlice({
         setSidebarOpen: (state, action: PayloadAction<boolean>) => {
             state.sidebarOpen = action.payload;
         },
-        toggleDarkMode: (state) => {
-            state.darkMode = !state.darkMode;
-        },
         setIsMobile: (state, action: PayloadAction<boolean>) => {
             state.isMobile = action.payload;
+            // Close sidebar on mobile by default
             if (action.payload) {
                 state.sidebarOpen = false;
             }
@@ -29,11 +26,5 @@ const uiSlice = createSlice({
     }
 });
 
-export const {
-    toggleSidebar,
-    setSidebarOpen,
-    toggleDarkMode,
-    setIsMobile
-} = uiSlice.actions;
-
+export const { toggleSidebar, setSidebarOpen, setIsMobile } = uiSlice.actions;
 export const uiReducer = uiSlice.reducer;
