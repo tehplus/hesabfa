@@ -32,14 +32,13 @@ const StyledDrawer = styled(Drawer, {
 })<StyledDrawerProps>(({ theme, open, isMobile }) => ({
     width: DRAWER_WIDTH,
     flexShrink: 0,
-    position: 'fixed',
     '& .MuiDrawer-paper': {
         width: DRAWER_WIDTH,
         boxSizing: 'border-box',
         backgroundColor: theme.palette.sidebar.background,
         color: theme.palette.sidebar.text,
-        borderLeft: `1px solid ${theme.palette.sidebar.border}`,
-        borderRight: 'none',
+        borderLeft: 'none',
+        borderRight: `1px solid ${theme.palette.sidebar.border}`,
         right: isMobile ? (open ? 0 : -DRAWER_WIDTH) : 0,
         left: 'auto',
         transition: theme.transitions.create('right', {
@@ -138,22 +137,27 @@ const MenuItemComponent: React.FC<MenuItemComponentProps> = ({
             setOpenMenus(prev => {
                 const newOpenMenus = new Set(prev);
                 if (level === 0) {
-                    // Close all other top-level menus
                     menuItems.forEach(menuItem => {
                         if (menuItem.id !== item.id) {
                             newOpenMenus.delete(menuItem.id);
-                            menuItem.children?.forEach(child => {
-                                newOpenMenus.delete(child.id);
-                            });
+                            // Safely check for children before mapping
+                            if (menuItem.children) {
+                                menuItem.children.forEach(child => {
+                                    newOpenMenus.delete(child.id);
+                                });
+                            }
                         }
                     });
                 }
                 
                 if (isOpen) {
                     newOpenMenus.delete(item.id);
-                    item.children?.forEach(child => {
-                        newOpenMenus.delete(child.id);
-                    });
+                    // Safely check for children before mapping
+                    if (item.children) {
+                        item.children.forEach(child => {
+                            newOpenMenus.delete(child.id);
+                        });
+                    }
                 } else {
                     newOpenMenus.add(item.id);
                 }
@@ -200,7 +204,7 @@ const MenuItemComponent: React.FC<MenuItemComponentProps> = ({
                     )}
                 </StyledListItemButton>
             </ListItem>
-            {hasChildren && (
+            {hasChildren && item.children && ( // Added safety check for item.children
                 <Collapse in={isOpen} timeout="auto" unmountOnExit>
                     <List component="div" disablePadding>
                         {item.children.map((child) => (
@@ -224,13 +228,11 @@ const Sidebar: React.FC = () => {
     const { sidebarOpen: open, isMobile } = useSelector((state: RootState) => state.ui);
     const [openMenus, setOpenMenus] = useState<Set<string>>(new Set());
 
-    // Reset open menus on route change
     useEffect(() => {
         if (isMobile) {
             setOpenMenus(new Set());
         }
         
-        // Find and open parent menu of current route
         const findAndOpenParentMenu = () => {
             for (const item of menuItems) {
                 if (item.children) {
@@ -255,7 +257,7 @@ const Sidebar: React.FC = () => {
             open={open}
             isMobile={isMobile}
             ModalProps={{
-                keepMounted: true // Better mobile performance
+                keepMounted: true
             }}
         >
             <LogoWrapper>

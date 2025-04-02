@@ -1,0 +1,21 @@
+body {
+  direction: rtl;
+}
+
+.MuiDrawer-root .MuiDrawer-paper {
+  width: 280px;
+  box-sizing: border-box;
+  background-color: #ffffff;
+  color: #4b5563;
+  border-right: 1px solid #e5e7eb;
+  border-left: none;
+  right: 0;
+  left: auto;
+  transition: right 225ms cubic-bezier(0.4, 0, 0.6, 1) 0ms;
+}
+
+/* تنظیمات اضافی برای RTL */
+.MuiListItemIcon-root {
+  margin-left: 16px;
+  margin-right: -4px;
+}

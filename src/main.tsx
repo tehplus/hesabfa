@@ -11,9 +11,9 @@ import CssBaseline from '@mui/material/CssBaseline';
 import { store } from './store';
 import theme from './theme';
 import App from './App';
-import './assets/fonts/fonts.css';
+import './assets/styles/global.css';
 
-// Create rtl cache
+// Create RTL cache
 const cacheRtl = createCache({
   key: 'muirtl',
   stylisPlugins: [prefixer, rtlPlugin],
